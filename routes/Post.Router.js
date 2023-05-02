@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { PostsModel } = require("../models/Post.model");
+const { PostsModel } = require("../models/Post.Model");
 
 const app = express();
 
@@ -106,40 +106,36 @@ PostRouter.delete("/:id", async (req, res) => {
 //  users to like a specific post identified by its ID.
 
 // like a particular post
-PostRouter.post('/:id/like', async (req, res) => {
-    let id = req.params.id;
-    let userId = req.body.userId;
+PostRouter.post("/:id/like", async (req, res) => {
+  let id = req.params.id;
+  let userId = req.body.userId;
 
-    try {
-        let post = await PostsModel.findById(id);
-        post.likes.push(userId);
-        await post.save();
+  try {
+    let post = await PostsModel.findById(id);
+    post.likes.push(userId);
+    await post.save();
 
-        res.status(202).send("Post liked ")
-    } catch (error) {
-        res.status(404).send(error.message);
-    }
-})
+    res.status(202).send("Post liked ");
+  } catch (error) {
+    res.status(404).send(error.message);
+  }
+});
 
+// adding comments
+PostRouter.post("/:id/comment", async (req, res) => {
+  let id = req.params.id;
+  try {
+    let post = await PostsModel.findById(id);
+    post.comments.push(req.body);
+    await post.save();
 
-// adding comments 
-PostRouter.post('/:id/comment', async (req, res) => {
-    let id = req.params.id;
-    try {
-        let post = await PostsModel.findById(id);
-        post.comments.push(req.body);
-        await post.save();
-
-        res.status(202).send("comment added ")
-    } catch (error) {
-        res.status(404).send(error.message);
-    }
-})
+    res.status(202).send("comment added ");
+  } catch (error) {
+    res.status(404).send(error.message);
+  }
+});
 
 //  users to comment on a specific post identified by its ID.
-
-
-
 
 module.exports = {
   PostRouter,
