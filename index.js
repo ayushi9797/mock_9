@@ -10,7 +10,7 @@ app.use("/posts", PostRouter);
 app.use(express.json());
 
 //routers
-app.get("/home", async (req, res) => {
+app.get("/", async (req, res) => {
   try {
     res.send(`<h2> HOME ROUTER </h2>`);
   } catch (error) {
